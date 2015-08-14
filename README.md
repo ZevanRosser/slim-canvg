@@ -1,80 +1,14 @@
-Introduction
-============
-canvg is a SVG parser and renderer. It takes a URL to a SVG file or the text of an SVG file, parses it in JavaScript, and renders the result on a [Canvas](http://dev.w3.org/html5/2dcontext/) element.  The rendering speed of the examples is about as fast as native SVG.
+# slim-canvg
 
-What's implemented?
-===================
-The end goal is everything from the [SVG spec](http://www.w3.org/TR/SVG/). The majority of the rendering and animation is working.  If you would like to see a feature implemented, don't hesitate to contact me or add it to the issues list.
+Blitting SVG to canvas is good for collision detection either with the mouse independant of DOM depth or for the collision between two SVG nodes. Unfortunately this isn't possible in IE without a lib like [canvg]([https://github.com/gabelerner/canvg). 
 
-Potential uses
-===============
-* Allows for inline embedding of SVG through JavaScript (w/o having to request another file or break validation)
-* Allows for single SVG version across all browsers that support Canvas
-* Allows for mobile devices supporting Canvas but not SVG to render SVG
-* Allows for SVG -> Canvas -> png transition all on the client side (through [toDataUrl](http://www.w3.org/TR/html5/the-canvas-element.html#dom-canvas-todataurl))
+This is a fork of [canvg]([https://github.com/gabelerner/canvg) created mostly for use with drawing a contour of an entire svg tag to canvas. In most browsers (Chrome, Firefox, Safari) drawing SVG to canvas is easy:
 
-Example Demonstration
-=====================
-[view here](http://gabelerner.github.io/canvg/examples/index.htm)
-Tested in Chrome, Firefox, Opera, and IE (through FlashCanvas)
+1. get the SVG string
+2. base64 encode it and prepend `data:image/svg+xml;base64,`
+3. load the data uri into an image node (by setting its `src` attribute)
+4. draw the new image to a canvas
 
-[jsfiddle playground](http://jsfiddle.net/L3hondLn/)
+(see the `examples/without-slim-canvg.html` to see the above four steps in action)
 
-Usage
-=====
-Include the following files in your page:
-```html
-<script type="text/javascript" src="http://gabelerner.github.io/canvg/rgbcolor.js"></script> 
-<script type="text/javascript" src="http://gabelerner.github.io/canvg/StackBlur.js"></script>
-<script type="text/javascript" src="http://gabelerner.github.io/canvg/canvg.js"></script> 
-```
-
-Put a canvas on your page
-```html
-<canvas id="canvas" width="1000px" height="600px"></canvas> 
-```
-
-Example canvg calls:
-```html
-<script type="text/javascript">
-window.onload = function() {
-  //load '../path/to/your.svg' in the canvas with id = 'canvas'
-  canvg('canvas', '../path/to/your.svg')
-
-  //load a svg snippet in the canvas with id = 'drawingArea'
-  canvg(document.getElementById('drawingArea'), '<svg>...</svg>')
-
-  //ignore mouse events and animation
-  canvg('canvas', 'file.svg', { ignoreMouse: true, ignoreAnimation: true }) 
-}
-</script>
-```
-
-The third parameter is options:
-* log: true => console.log information
-* ignoreMouse: true => ignore mouse events
-* ignoreAnimation: true => ignore animations
-* ignoreDimensions: true => does not try to resize canvas
-* ignoreClear: true => does not clear canvas
-* offsetX: int => draws at a x offset
-* offsetY: int => draws at a y offset
-* scaleWidth: int => scales horizontally to width
-* scaleHeight: int => scales vertically to height
-* renderCallback: function => will call the function after the first render is completed
-* forceRedraw: function => will call the function on every frame, if it returns true, will redraw
-* useCORS: true => will attempt to use CORS on images to not taint canvas
-
-You can call canvg without parameters to replace all svg images on a page. See the [example](http://gabelerner.github.io/canvg/examples/convert.htm).
-
-There is also a built in extension method to the canvas context to draw svgs similar to the way [drawImage](http://www.w3.org/TR/2dcontext/#dom-context-2d-drawimage) works:
-```javascript
-var c = document.getElementById('canvas');
-var ctx = c.getContext('2d');
-ctx.drawSvg(SVG_XML_OR_PATH_TO_SVG, dx, dy, dw, dh);
-```
-
-Related Repositories
-====================
-* [Output javascript instead of rendering to canvas](http://code.google.com/p/jscapturecanvas/)
-* [A combo of canvg & jscapturecanvas to compile SVG to Canvas (Server side)](https://github.com/nathan-muir/canvgc)
-* [Edit SVG files in your browser](https://code.google.com/p/svg-edit/)
+In IE9+, this technique fails with a security error.
