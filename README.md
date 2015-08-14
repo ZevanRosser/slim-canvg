@@ -1,4 +1,5 @@
-# slim-canvg
+# slim-canvg WIP README
+
 
 Blitting SVG to canvas is good for collision detection either with the mouse independant of DOM depth or for the collision between two SVG nodes. Unfortunately this isn't possible in IE without a lib like [canvg]([https://github.com/gabelerner/canvg). 
 
