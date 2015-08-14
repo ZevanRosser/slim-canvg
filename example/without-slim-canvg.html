@@ -7,9 +7,21 @@
     <script>
       window.addEventListener('load', function() {
         var canvas = document.querySelector('canvas'),
-            svg = document.querySelector('.svg').innerHTML;
+            ctx = canvas.getContext('2d'),
+            svg = document.querySelector('.svg').innerHTML,
+            
+            // you can alter the string with regular expressions to easily
+            // remove things like fills and images
+            dataUri = 'data:image/svg+xml;base64, ' + btoa(svg),
+            img = new Image();
         
-        canvg(canvas, svg, { col: '#00ff00' });
+        img.src = dataUri;
+        
+        img.addEventListener('load', function() {
+          ctx.drawImage(img, 0, 0);
+        });
+        
+        
       });
     </script>
     <style>
