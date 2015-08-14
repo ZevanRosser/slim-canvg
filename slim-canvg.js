@@ -3,35 +3,9 @@
  * MIT Licensed
  * Gabe Lerner (gabelerner@gmail.com)
  * http://code.google.com/p/canvg/
- *
- * Requires: rgbcolor.js - http://www.phpied.com/rgb-color-parser-in-javascript/
  */
-(function (global, factory) {
-  'use strict';
-  // export as AMD...
-  if (typeof define !== 'undefined' && define.amd) {
-    define('canvgModule', [], factory);
-  }  // ...or as browserify
-  else if (typeof module !== 'undefined' && module.exports) {
-    module.exports = factory();
-  }
-  global.canvg = factory();
-}(typeof window !== 'undefined' ? window : this, function () {
-  // canvg(target, s)
-  // empty parameters: replace all 'svg' elements on page with 'canvas' elements
-  // target: canvas element or the id of a canvas element
-  // s: svg string, url to svg file, or xml document
-  // opts: optional hash of options
-  //     ignoreMouse: true => ignore mouse events
-  //     ignoreAnimation: true => ignore animations
-  //     ignoreDimensions: true => does not try to resize canvas
-  //     ignoreClear: true => does not clear canvas
-  //     offsetX: int => draws at a x offset
-  //     offsetY: int => draws at a y offset
-  //     scaleWidth: int => scales horizontally to width
-  //     scaleHeight: int => scales vertically to height
-  //     renderCallback: function => will call the function after the first render is completed
-  var canvg = function (target, s, opts) {
+(function() {
+  window.slimCanvg = function (target, s, opts) {
     s = s.trim();
     if (typeof target == 'string') {
       target = document.getElementById(target);
@@ -1790,7 +1764,6 @@
     svg.stop = function () {};
 
     return svg;
-  }
+  };
+})();
 
-  return canvg;
-}));
